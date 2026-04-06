@@ -54,75 +54,32 @@
 
 <canvas id="canvas"></canvas>
 
-<script>
+<<script>
+document.addEventListener("DOMContentLoaded", () => {
+
 const texto = "Elian y Yhos";
 const contenedor = document.getElementById("texto");
 const subtexto = document.getElementById("subtexto");
 
 let i = 0;
 
-// ✨ Animación tipo escritura
 function escribir() {
     if (i < texto.length) {
-        contenedor.innerHTML += texto.charAt(i);
+        contenedor.textContent += texto[i];
         i++;
-        setTimeout(escribir, 120);
+        setTimeout(escribir, 150);
     } else {
         setTimeout(() => {
             subtexto.style.opacity = 1;
-            iniciarFlores();
         }, 800);
     }
 }
 
 escribir();
 
-// 🌸 Animación de flores (canvas)
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let flores = [];
-
-function crearFlor() {
-    return {
-        x: Math.random() * canvas.width,
-        y: canvas.height,
-        size: Math.random() * 4 + 2,
-        speed: Math.random() * 1 + 0.5,
-        color: `hsl(${Math.random() * 360}, 70%, 70%)`
-    };
-}
-
-function iniciarFlores() {
-    for (let i = 0; i < 80; i++) {
-        flores.push(crearFlor());
-    }
-    animarFlores();
-}
-
-function animarFlores() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    flores.forEach(flor => {
-        flor.y -= flor.speed;
-
-        ctx.beginPath();
-        ctx.arc(flor.x, flor.y, flor.size, 0, Math.PI * 2);
-        ctx.fillStyle = flor.color;
-        ctx.fill();
-
-        if (flor.y < 0) {
-            flor.y = canvas.height;
-            flor.x = Math.random() * canvas.width;
-        }
-    });
-
-    requestAnimationFrame(animarFlores);
-}
+});
 </script>
+
 
 </body>
 </html>
