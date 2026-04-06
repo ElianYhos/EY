@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Elian y Yhos</title>
+
+<style>
+    body {
+        margin: 0;
+        background: #0d0d0d;
+        color: white;
+        font-family: 'Segoe UI', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        flex-direction: column;
+        overflow: hidden;
+    }
+
+    h1 {
+        font-size: 3rem;
+        letter-spacing: 3px;
+        margin-bottom: 20px;
+    }
+
+    #texto {
+        font-size: 2.5rem;
+        min-height: 50px;
+        border-right: 2px solid white;
+        white-space: nowrap;
+        overflow: hidden;
+    }
+
+    #subtexto {
+        margin-top: 20px;
+        font-size: 1.5rem;
+        opacity: 0;
+        transition: opacity 2s ease;
+        color: #ff6b81;
+    }
+
+    canvas {
+        position: absolute;
+        bottom: 0;
+    }
+</style>
+</head>
+
+<body>
+
+<div id="texto"></div>
+<div id="subtexto">mi hilo rojo ❤️</div>
+
+<canvas id="canvas"></canvas>
+
+<script>
+const texto = "Elian y Yhos";
+const contenedor = document.getElementById("texto");
+const subtexto = document.getElementById("subtexto");
+
+let i = 0;
+
+// ✨ Animación tipo escritura
+function escribir() {
+    if (i < texto.length) {
+        contenedor.innerHTML += texto.charAt(i);
+        i++;
+        setTimeout(escribir, 120);
+    } else {
+        setTimeout(() => {
+            subtexto.style.opacity = 1;
+            iniciarFlores();
+        }, 800);
+    }
+}
+
+escribir();
+
+// 🌸 Animación de flores (canvas)
+const canvas = document.getElementById("canvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let flores = [];
+
+function crearFlor() {
+    return {
+        x: Math.random() * canvas.width,
+        y: canvas.height,
+        size: Math.random() * 4 + 2,
+        speed: Math.random() * 1 + 0.5,
+        color: `hsl(${Math.random() * 360}, 70%, 70%)`
+    };
+}
+
+function iniciarFlores() {
+    for (let i = 0; i < 80; i++) {
+        flores.push(crearFlor());
+    }
+    animarFlores();
+}
+
+function animarFlores() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    flores.forEach(flor => {
+        flor.y -= flor.speed;
+
+        ctx.beginPath();
+        ctx.arc(flor.x, flor.y, flor.size, 0, Math.PI * 2);
+        ctx.fillStyle = flor.color;
+        ctx.fill();
+
+        if (flor.y < 0) {
+            flor.y = canvas.height;
+            flor.x = Math.random() * canvas.width;
+        }
+    });
+
+    requestAnimationFrame(animarFlores);
+}
+</script>
+
+</body>
+</html>
